@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useToast } from '../context/ToastContext'
 
 export default function Login(){
@@ -10,19 +10,22 @@ export default function Login(){
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/tasks'
 
   useEffect(() => {
     if (user) {
-      navigate('/tasks', { replace: true })
+      navigate(from, { replace: true })
     }
-  }, [user, navigate])
+  }, [user, navigate, from])
 
   async function handleSubmit(e){
     e.preventDefault(); setLoading(true)
     try{ 
       await login(email, password); 
       showToast('Welcome back!') 
-      navigate('/tasks', { replace: true })
+      navigate(from, { replace: true })
     }
     catch(e){ showToast(e?.response?.data?.message || 'Login failed') }
     finally{ setLoading(false) }
