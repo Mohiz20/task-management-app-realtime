@@ -16,7 +16,9 @@ export function AuthProvider({ children }){
     setLoading(false)
   },[])
 
-  const login = useCallback(async (email, password)=>{
+  const login = useCallback(async (email, password)=>{I see the user has reverted the setTimeout changes. You're absolutely right - we need a proper solution. The best approach is to create a global toast context that persists across navigation. Let me implement this:
+
+
     const { data } = await api.post('/auth/login', { email, password })
     if (data?.token) localStorage.setItem('token', data.token)
     setUser(data.user || (data.token ? jwtDecode(data.token) : null))

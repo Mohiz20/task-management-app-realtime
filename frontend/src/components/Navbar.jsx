@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useAuth } from '../hooks/useAuth'
+import { useToast } from '../context/ToastContext'
 import ConnectionBadge from './ConnectionBadge'
 
 const Bar = styled.nav`
@@ -20,12 +21,19 @@ const Btn = styled.button`
 
 export default function Navbar(){
   const { user, logout } = useAuth()
+  const { showToast } = useToast()
+
+  const handleLogout = () => {
+    logout()
+    showToast('Logged out successfully')
+  }
+
   return (
     <Bar>
       <Brand>Tasks</Brand>
       <Actions>
         <ConnectionBadge />
-        {user ? <Btn className="appear" onClick={logout}>Logout</Btn> : null}
+        {user ? <Btn className="appear" onClick={handleLogout}>Logout</Btn> : null}
       </Actions>
     </Bar>
   )

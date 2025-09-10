@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-import Toast from '../components/Toast'
+import { useToast } from '../context/ToastContext'
 
 export default function Login(){
   const { login, user } = useAuth()
+  const { showToast } = useToast()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [toast, setToast] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -21,10 +21,10 @@ export default function Login(){
     e.preventDefault(); setLoading(true)
     try{ 
       await login(email, password); 
-      setToast('Welcome back!') 
+      showToast('Welcome back!') 
       navigate('/tasks', { replace: true })
     }
-    catch(e){ setToast(e?.response?.data?.message || 'Login failed') }
+    catch(e){ showToast(e?.response?.data?.message || 'Login failed') }
     finally{ setLoading(false) }
   }
 
@@ -43,7 +43,6 @@ export default function Login(){
       <div style={{ marginTop:12, opacity:.8 }}>
         No account? <a href="/register">Create one</a>
       </div>
-      <Toast message={toast} onClose={()=>setToast('')} />
     </div>
   )
 }

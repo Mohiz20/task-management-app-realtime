@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-import Toast from '../components/Toast'
+import { useToast } from '../context/ToastContext'
 
 export default function Register(){
   const { register, user } = useAuth()
+  const { showToast } = useToast()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [toast, setToast] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -22,10 +22,10 @@ export default function Register(){
     e.preventDefault(); setLoading(true)
     try{ 
       await register({ name, email, password }); 
-      setToast('Account created!') 
+      showToast('Account created!') 
       navigate('/tasks', { replace: true })
     }
-    catch(e){ setToast(e?.response?.data?.message || 'Registration failed') }
+    catch(e){ showToast(e?.response?.data?.message || 'Registration failed') }
     finally{ setLoading(false) }
   }
 
@@ -45,7 +45,6 @@ export default function Register(){
       <div style={{ marginTop:12, opacity:.8 }}>
         Have an account? <a href="/login">Sign in</a>
       </div>
-      <Toast message={toast} onClose={()=>setToast('')} />
     </div>
   )
 }
