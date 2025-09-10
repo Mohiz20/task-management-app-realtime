@@ -40,7 +40,7 @@ exports.updateTask = async (req, res) => {
     const id = toInt(req.params.id);
     const { title, description, category, completed } = req.body;
     const updated = await prisma.task.update({
-      where: { id },
+      where: { id, userId: req.user.id },    // ownership check we can add it to other endpoints too
       data: { title, description, category, completed }
     });
     const io = req.app.get('io');
