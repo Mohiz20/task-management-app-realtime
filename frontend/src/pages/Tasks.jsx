@@ -18,7 +18,6 @@ export default function Tasks() {
   const [query, setQuery] = useState("");
   const [formKey, setFormKey] = useState(0);
   const [sort, setSort] = useState("date_desc");
-  const [dragId, setDragId] = useState(null);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, task: null });
   const [operationLoading, setOperationLoading] = useState({
     creating: false,

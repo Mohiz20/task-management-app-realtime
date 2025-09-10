@@ -1,1 +1,0 @@
-Detail on how update by user and delete works for the scenario
