@@ -6,16 +6,19 @@ import GlobalStyle from './styles/GlobalStyle'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketProvider'
 import { ToastProvider } from './context/ToastContext'
+import { ThemeProvider } from './context/ThemeContext'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <SocketProvider>
-          <ToastProvider>
-            <GlobalStyle />
-            <App />
-          </ToastProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <GlobalStyle />
+              <App />
+            </ToastProvider>
+          </ThemeProvider>
         </SocketProvider>
       </AuthProvider>
     </BrowserRouter>

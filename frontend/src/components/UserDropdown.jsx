@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useToast } from '../context/ToastContext'
+import { useTheme } from '../context/ThemeContext'
 
 const Container = styled.div`
   position: relative;
@@ -12,10 +13,10 @@ const Container = styled.div`
 const Menu = styled.div`
   position: ${props => props.isMobile ? 'fixed' : 'absolute'};
   ${props => props.isMobile ? 'bottom: 16px; left: 16px; right: 16px;' : 'top: calc(100% + 8px); right: 0; min-width: 280px;'}
-  background: #121821;
-  border: 1px solid #233244;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: var(--shadow);
   backdrop-filter: blur(8px);
   z-index: ${props => props.isMobile ? 1001 : 1000};
   opacity: ${props => props.isOpen ? 1 : 0};
@@ -27,7 +28,7 @@ const Menu = styled.div`
 
 const Header = styled.div`
   padding: 16px;
-  border-bottom: 1px solid #233244;
+  border-bottom: 1px solid var(--border);
 `
 
 const Name = styled.div`
@@ -39,7 +40,7 @@ const Name = styled.div`
 
 const Email = styled.div`
   font-size: 14px;
-  color: #8b9bb3;
+  color: var(--muted);
   opacity: 0.8;
 `
 
@@ -65,8 +66,8 @@ const Button = styled.button`
   -webkit-tap-highlight-color: transparent;
   min-height: 44px;
 
-  &:hover { background: #1f2a36; color: var(--primary); }
-  &.logout { color: #ff6b6b; &:hover { background: rgba(255,107,107,0.1); } }
+  &:hover { background: var(--hover); color: var(--primary); }
+  &.logout { color: var(--danger); &:hover { background: rgba(239,68,68,0.1); } }
   
   @media (max-width: 768px) {
     padding: 16px;
@@ -88,10 +89,10 @@ export default function UserDropdown({ user, children }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   const { logout } = useAuth()
+  const { theme, toggle } = useTheme()
   const { showToast } = useToast()
   const ref = useRef(null)
   const mobileMenuRef = useRef(null)
-
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768)
     const handleClickOutside = (e) => {
@@ -130,11 +131,8 @@ export default function UserDropdown({ user, children }) {
         <Email>{user?.email || 'No email'}</Email>
       </Header>
       <Actions>
-        <Button onClick={() => setIsOpen(false)}>
-          <span>👤</span> Profile Settings
-        </Button>
-        <Button onClick={() => setIsOpen(false)}>
-          <span>⚙️</span> Preferences
+        <Button onClick={toggle}>
+          {theme==='dark'? '☀️ Light' : '🌙 Dark'}
         </Button>
         <Button className="logout" onClick={handleLogout}>
           <span>🚪</span> Logout

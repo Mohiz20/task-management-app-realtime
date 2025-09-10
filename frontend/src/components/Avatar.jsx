@@ -7,20 +7,20 @@ const AvatarContainer = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, #4a9eff 100%);
-  color: #08111f;
+  background: linear-gradient(135deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 80%, white) 100%);
+  color: var(--bg);
   font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 2px solid #233244;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
   transition: all 0.2s ease;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.4);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 30%, transparent);
     border-color: var(--primary);
   }
 `
