@@ -6,6 +6,14 @@ A modern, full-stack task management application with real-time updates, built w
 
 ### Task Ownership and Permissionsand real-time collaboration capabilities.
 
+## 📱 Application Screenshots
+
+*[Screenshots section left blank as requested - to be added when available]*
+
+## 🌐 Live Demo
+
+*[Live demo links section left blank as requested - to be added when deployed]*
+
 ## 🚀 Features
 
 ### Core Functionality
@@ -197,14 +205,6 @@ The application uses Socket.IO for real-time updates with the following events:
 - `task_created` - Broadcast when a new task is created
 - `task_updated` - Broadcast when a task is updated
 - `task_deleted` - Broadcast when a task is deleted
-
-## 📱 Application Screenshots
-
-*[Screenshots section left blank as requested - to be added when available]*
-
-## 🌐 Live Demo
-
-*[Live demo links section left blank as requested - to be added when deployed]*
 
 ## � Authorization & Security
 
