@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { useAuth } from '../hooks/useAuth'
 import { useToast } from '../context/ToastContext'
 import ConnectionBadge from './ConnectionBadge'
+import Avatar from './Avatar'
+import UserDropdown from './UserDropdown'
 
 const Bar = styled.nav`
   position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px);
@@ -9,7 +11,7 @@ const Bar = styled.nav`
   padding:12px 16px; background:rgba(11,15,20,.7); border-bottom:1px solid #1f2a36;
 `
 const Brand = styled.div`font-weight:700; letter-spacing:.2px;`
-const Actions = styled.div`display:flex; gap:10px; align-items:center;`
+const Actions = styled.div`display:flex; gap:12px; align-items:center;`
 const Btn = styled.button`
   padding:8px 12px; border-radius:12px; border:1px solid #233244; background:#121821; color:#e6eef8;
   box-shadow:0 0 0 0 rgba(98,161,255,.2);
@@ -20,20 +22,20 @@ const Btn = styled.button`
 `
 
 export default function Navbar(){
-  const { user, logout } = useAuth()
-  const { showToast } = useToast()
-
-  const handleLogout = () => {
-    logout()
-    showToast('Logged out successfully')
-  }
+  const { user } = useAuth()
 
   return (
     <Bar>
       <Brand>Tasks</Brand>
       <Actions>
         <ConnectionBadge />
-        {user ? <Btn className="appear" onClick={handleLogout}>Logout</Btn> : null}
+        {user ? (
+          <>
+            <UserDropdown user={user}>
+              <Avatar user={user} />
+            </UserDropdown>
+          </>
+        ) : null}
       </Actions>
     </Bar>
   )
