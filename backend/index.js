@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { Server } = require('socket.io');
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const aiRoutes = require('./routes/ai');
 const path = require("path");
 const YAML = require("yamljs");
 const swaggerUi = require("swagger-ui-express");
@@ -35,6 +36,7 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/ai', aiRoutes);
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);

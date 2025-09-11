@@ -23,11 +23,17 @@ export default function TaskForm({ onSubmit, onCancel, initial, isLoading }){
   const [description, setDescription] = useState('')
   const [categories, setCategories] = useState([])
   const [categoryInput, setCategoryInput] = useState('')
+  const [priority, setPriority] = useState('MEDIUM')
+  const [dueDate, setDueDate] = useState('')
+  const [estimatedMinutes, setEstimatedMinutes] = useState('')
 
   useEffect(()=>{
     if(initial){
       setTitle(initial.title || '')
       setDescription(initial.description || '')
+      setPriority(initial.priority || 'MEDIUM')
+      setDueDate(initial.dueDate ? new Date(initial.dueDate).toISOString().slice(0, 16) : '')
+      setEstimatedMinutes(initial.estimatedMinutes || '')
       // Parse categories from string (backward compatibility)
       let cats = []
       if (initial.categories && Array.isArray(initial.categories)) {
@@ -72,7 +78,10 @@ export default function TaskForm({ onSubmit, onCancel, initial, isLoading }){
       description: description.trim(), 
       categories: finalCategories,
       // Keep backward compatibility
-      category: finalCategories.join(', ')
+      category: finalCategories.join(', '),
+      priority,
+      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      estimatedMinutes: estimatedMinutes ? parseInt(estimatedMinutes, 10) : null
     })
   }
 
@@ -184,6 +193,54 @@ return (
         <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: 4 }}>
           Press space or enter to add a category. Backspace to remove the last one.
         </div>
+      </div>
+
+      {/* Priority and Due Date Row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div>
+          <label style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 4, display: 'block' }}>
+            Priority
+          </label>
+          <select
+            style={{...inputStyle, opacity: isLoading ? 0.6 : 1}}
+            value={priority}
+            onChange={e => setPriority(e.target.value)}
+            disabled={isLoading}
+          >
+            <option value="LOW">🟢 Low</option>
+            <option value="MEDIUM">🟡 Medium</option>
+            <option value="HIGH">🔴 High</option>
+          </select>
+        </div>
+        <div>
+          <label style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 4, display: 'block' }}>
+            Due Date
+          </label>
+          <input
+            type="datetime-local"
+            style={{...inputStyle, opacity: isLoading ? 0.6 : 1}}
+            value={dueDate}
+            onChange={e => setDueDate(e.target.value)}
+            disabled={isLoading}
+          />
+        </div>
+      </div>
+
+      {/* Estimated Time */}
+      <div>
+        <label style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 4, display: 'block' }}>
+          Estimated Time (minutes)
+        </label>
+        <input
+          type="number"
+          min="1"
+          step="1"
+          style={{...inputStyle, opacity: isLoading ? 0.6 : 1}}
+          placeholder="e.g. 30, 60, 120"
+          value={estimatedMinutes}
+          onChange={e => setEstimatedMinutes(e.target.value)}
+          disabled={isLoading}
+        />
       </div>
 
       <div style={{ display:'flex', gap:8 }}>

@@ -24,7 +24,11 @@ model Task {
   title       String   @db.VarChar(255)
   description String?  @db.Text
   category    String?  @db.VarChar(50)
+  priority        Priority   @default(MEDIUM)
+  dueDate         DateTime?
+  estimatedMinutes Int?
   completed   Boolean  @default(false)
+  completedAt     DateTime?
   userId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -33,3 +37,10 @@ model Task {
   @@index([userId]) // Index for faster user task queries
   @@index([completed, userId]) // Composite index for filtering completed tasks by user
 }
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+

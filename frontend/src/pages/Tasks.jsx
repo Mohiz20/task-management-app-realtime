@@ -52,10 +52,22 @@ export default function Tasks() {
     const byTitle = (a, b) => a.title.localeCompare(b.title);
     const byDate = (a, b) =>
       new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+    const byPriority = (a, b) => {
+      const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+      return (priorityOrder[a.priority] || 2) - (priorityOrder[b.priority] || 2);
+    };
+    const byDueDate = (a, b) => {
+      const dateA = a.dueDate ? new Date(a.dueDate) : new Date('9999-12-31');
+      const dateB = b.dueDate ? new Date(b.dueDate) : new Date('9999-12-31');
+      return dateA - dateB;
+    };
+    
     if (sort === "title_asc") list.sort(byTitle);
     else if (sort === "title_desc") list.sort((a, b) => byTitle(b, a));
     else if (sort === "date_asc") list.sort(byDate);
-    else list.sort((a, b) => byDate(b, a)); // date_desc default
+    else if (sort === "priority_desc") list.sort((a, b) => byPriority(b, a));
+    else if (sort === "due_date_asc") list.sort(byDueDate);
+    else list.sort((a, b) => byDate(b, a));
 
     return list;
   }, [tasks, query, filter, sort]);
@@ -175,7 +187,12 @@ export default function Tasks() {
     }));
     
     try {
-      await updateTask(t.id, { completed: !t.completed }, true);
+      const newCompletedState = !t.completed;
+      const updatePayload = { 
+        completed: newCompletedState,
+        completedAt: newCompletedState ? new Date().toISOString() : null
+      };
+      await updateTask(t.id, updatePayload, true);
     } catch (e) {
       setToast({ 
         message: e?.response?.data?.message || "Failed to toggle task status", 
@@ -293,6 +310,8 @@ export default function Tasks() {
         >
           <option value="date_desc">Date (new → old)</option>
           <option value="date_asc">Date (old → new)</option>
+          <option value="priority_desc">Priority (high → low)</option>
+          <option value="due_date_asc">Due Date (soon → later)</option>
           <option value="title_asc">Title (A → Z)</option>
           <option value="title_desc">Title (Z → A)</option>
         </select>

@@ -58,6 +58,41 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete, isToggling 
     // Split comma-separated string and clean up
     categories = task.category.split(',').map(c => c.trim()).filter(Boolean)
   }
+
+  // Helper functions for new fields
+  const getPriorityIcon = (priority) => {
+    switch(priority) {
+      case 'HIGH': return '🔴'
+      case 'MEDIUM': return '🟡'
+      case 'LOW': return '🟢'
+      default: return '🟡'
+    }
+  }
+
+  const formatDueDate = (dueDate) => {
+    if (!dueDate) return null
+    const date = new Date(dueDate)
+    const now = new Date()
+    const isOverdue = date < now && !task.completed
+    const isToday = date.toDateString() === now.toDateString()
+    
+    return {
+      formatted: isToday ? 'Today' : date.toLocaleDateString(),
+      isOverdue,
+      isToday
+    }
+  }
+
+  const formatEstimatedTime = (minutes) => {
+    if (!minutes) return null
+    if (minutes < 60) return `${minutes}m`
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
+  }
+
+  const dueInfo = formatDueDate(task.dueDate)
+  const estimatedTime = formatEstimatedTime(task.estimatedMinutes)
   
   return (
     <>
@@ -86,8 +121,61 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete, isToggling 
           )}
         </div>
         <div style={{lineHeight:1.25}}>
-          <Title style={{ textDecoration: task.completed? 'line-through':'none', opacity: task.completed? .6:1 }}>{task.title}</Title>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Title style={{ textDecoration: task.completed? 'line-through':'none', opacity: task.completed? .6:1 }}>{task.title}</Title>
+            {task.priority && (
+              <span style={{ fontSize: '14px' }} title={`Priority: ${task.priority}`}>
+                {getPriorityIcon(task.priority)}
+              </span>
+            )}
+          </div>
+          
           {task.description? <div style={{ fontSize:14, opacity:.9, marginTop:4 }}>{task.description}</div>:null}
+          
+          {/* Task metadata row */}
+          <div style={{ marginTop: 8, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+            {dueInfo && (
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 4,
+                fontSize: '11px',
+                color: dueInfo.isOverdue ? '#f44336' : dueInfo.isToday ? '#ff9800' : 'var(--muted)',
+                fontWeight: dueInfo.isOverdue || dueInfo.isToday ? '600' : '400'
+              }}>
+                <span>📅</span>
+                {dueInfo.formatted}
+                {dueInfo.isOverdue && <span style={{ marginLeft: 2 }}>⚠️</span>}
+              </div>
+            )}
+            
+            {estimatedTime && (
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 4,
+                fontSize: '11px',
+                color: 'var(--muted)'
+              }}>
+                <span>⏱️</span>
+                {estimatedTime}
+              </div>
+            )}
+            
+            {task.completed && task.completedAt && (
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 4,
+                fontSize: '11px',
+                color: '#4caf50'
+              }}>
+                <span>✅</span>
+                Completed {new Date(task.completedAt).toLocaleDateString()}
+              </div>
+            )}
+          </div>
+
           <Meta style={{ marginTop:8, display:'flex', gap:8, alignItems:'flex-start', flexWrap: 'wrap' }}>
             {categories.length > 0 && (
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -116,7 +204,7 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete, isToggling 
               </div>
             )}
             <span style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '2px' }}>
-              {new Date(task.createdAt || Date.now()).toLocaleString()}
+              Created {new Date(task.createdAt || Date.now()).toLocaleDateString()}
             </span>
           </Meta>
         </div>
