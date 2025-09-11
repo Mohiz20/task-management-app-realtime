@@ -8,14 +8,14 @@ A modern, full-stack task management application with real-time updates, built w
 
 ## 📱 Application Screenshots   
 
-### ![1](https://drive.google.com/file/d/15xVSJXPcJv-kQAi8baWVzr0NQ05SNOQ3/view?usp=sharing)
+### ![1](https://drive.google.com/uc?export=view&id=kQAi8baWVzr0NQ05SNOQ3)
 ### ![2](https://drive.google.com/uc?export=view&id=1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7)
-### ![3](https://drive.google.com/file/d/1KP93U64YydWaS1EE8YFHIPH5lj0ySapU/view?usp=sharing)
-### ![4](https://drive.google.com/file/d/1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX/view?usp=sharing)
+### ![3](https://drive.google.com/uc?export=view&id=1KP93U64YydWaS1EE8YFHIPH5lj0ySapU)
+### ![4](https://drive.google.com/uc?export=view&id=Xa1NlS1agYT3KoHcwB61XAmMQjeTeX)
 
 ## 🌐 Live Demo
 
-### ![App Demo](https://drive.google.com/file/d/1niM8utoCh5b5mhEZB3w4xKUFPLKDs_uX/view?usp=sharing)
+### ![App Demo](https://drive.google.com/uc?export=view&id=1niM8utoCh5b5mhEZB3w4xKUFPLKDs_uX)
 
 ## 🚀 Deployment
 
