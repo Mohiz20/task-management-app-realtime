@@ -8,7 +8,7 @@ A modern, full-stack task management application with real-time updates, built w
 
 ## 📱 Application Screenshots   
 
-### ![1](https://drive.google.com/uc?export=view&id=Xa1NlS1agYT3KoHcwB61XAmMQjeTeX)
+### ![1](https://drive.google.com/uc?export=view&id=1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX)
 ### ![2](https://drive.google.com/uc?export=view&id=1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7)
 ### ![3](https://drive.google.com/uc?export=view&id=1KP93U64YydWaS1EE8YFHIPH5lj0ySapU)
 
