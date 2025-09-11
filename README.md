@@ -9,9 +9,9 @@ A modern, full-stack task management application with real-time updates, built w
 ## 📱 Application Screenshots   
 
 ### ![1](https://drive.google.com/file/d/15xVSJXPcJv-kQAi8baWVzr0NQ05SNOQ3/view?usp=sharing)
-### ![App Screenshot](https://drive.google.com/file/d/1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7/view?usp=sharing)
-### ![App Screenshot](https://drive.google.com/file/d/1KP93U64YydWaS1EE8YFHIPH5lj0ySapU/view?usp=sharing)
-### ![App Screenshot](https://drive.google.com/file/d/1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX/view?usp=sharing)
+### ![2](https://drive.google.com/uc?export=view&id=1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7)
+### ![3](https://drive.google.com/file/d/1KP93U64YydWaS1EE8YFHIPH5lj0ySapU/view?usp=sharing)
+### ![4](https://drive.google.com/file/d/1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX/view?usp=sharing)
 
 ## 🌐 Live Demo
 
