@@ -6,14 +6,17 @@ A modern, full-stack task management application with real-time updates, built w
 
 ### Task Ownership, Permissions and real-time collaboration capabilities.
 
-## 📱 Application Screenshots   
+## 📱 Application Screenshots
 
-### ![1](https://drive.google.com/uc?export=view&id=1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX)
-### ![2](https://drive.google.com/uc?export=view&id=1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7)
+### ![1](https://drive.google.com/uc?export=view&id=1ybDib0yFU5BaakbGk68G7AH6Nx2X_UBP)
+### ![2](https://drive.google.com/uc?export=view&id=19-jlN357YV1MKkF8JWGgY-bce208usRT)
 ### ![3](https://drive.google.com/uc?export=view&id=1KP93U64YydWaS1EE8YFHIPH5lj0ySapU)
+### ![4](https://drive.google.com/uc?export=view&id=1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX)
+### ![5](https://drive.google.com/uc?export=view&id=1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7)
 
 ## 🌐 Live Demo
 
+### ![App Demo with AI](https://drive.google.com/uc?export=view&id=1G6CDdya4jO_ZMUA_MjUUneGRqCqCxsTL)
 ### ![App Demo](https://drive.google.com/uc?export=view&id=1niM8utoCh5b5mhEZB3w4xKUFPLKDs_uX)
 
 ## 🚀 Deployment
