@@ -36,7 +36,7 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
-app.use('/ai', aiRoutes);
+app.use('/api/ai', aiRoutes);
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);

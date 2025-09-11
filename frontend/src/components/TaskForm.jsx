@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useAxios from '../hooks/useAxios'
 
 // Category color palette (same as TaskCard)
 const categoryColors = [
@@ -19,6 +20,7 @@ const getCategoryColor = (category) => {
 }
 
 export default function TaskForm({ onSubmit, onCancel, initial, isLoading }){
+  const { request } = useAxios()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [categories, setCategories] = useState([])
@@ -26,6 +28,9 @@ export default function TaskForm({ onSubmit, onCancel, initial, isLoading }){
   const [priority, setPriority] = useState('MEDIUM')
   const [dueDate, setDueDate] = useState('')
   const [estimatedMinutes, setEstimatedMinutes] = useState('')
+  const [aiContext, setAiContext] = useState('')
+  const [isAiLoading, setIsAiLoading] = useState(false)
+  const [suggestedSubtasks, setSuggestedSubtasks] = useState([])
 
   useEffect(()=>{
     if(initial){
@@ -63,6 +68,51 @@ export default function TaskForm({ onSubmit, onCancel, initial, isLoading }){
 
   function removeCategory(categoryToRemove) {
     setCategories(categories.filter(cat => cat !== categoryToRemove))
+  }
+
+  async function handleAISuggest() {
+    if (isAiLoading || !aiContext.trim()) return;
+    
+    setIsAiLoading(true);
+    try {
+      const { data: suggestion } = await request({
+        method: 'POST',
+        url: '/ai/suggest-task',
+        data: { context: aiContext }
+      });
+      
+      // Apply AI suggestions to form fields
+      if (suggestion.title && !title) {
+        setTitle(suggestion.title);
+      }
+      if (suggestion.description && !description) {
+        setDescription(suggestion.description);
+      }
+      if (suggestion.category && categories.length === 0) {
+        setCategories([suggestion.category]);
+      }
+      if (suggestion.priority) {
+        setPriority(suggestion.priority);
+      }
+      if (suggestion.estimatedMinutes && !estimatedMinutes) {
+        setEstimatedMinutes(suggestion.estimatedMinutes.toString());
+      }
+      if (suggestion.dueDate && !dueDate) {
+        // Convert ISO string to datetime-local format (YYYY-MM-DDTHH:MM)
+        const date = new Date(suggestion.dueDate);
+        const localDatetime = date.toISOString().slice(0, 16);
+        setDueDate(localDatetime);
+      }
+      if (suggestion.subtasks && suggestion.subtasks.length > 0) {
+        setSuggestedSubtasks(suggestion.subtasks);
+      }
+    } catch (error) {
+      console.error('AI suggestion error:', error);
+      // You could add toast notification here
+      alert(error?.response?.data?.message || error.message || 'AI suggestion failed');
+    } finally {
+      setIsAiLoading(false);
+    }
   }
 
   function handleSubmit(e){
@@ -104,6 +154,91 @@ const ghostBtn = {
 
 return (
     <form onSubmit={handleSubmit} style={{ display:'grid', gap:10 }}>
+      {/* AI Suggestion Section */}
+      {!initial && (
+        <div style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          borderRadius: 12,
+          padding: 12,
+          marginBottom: 8
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: 8, 
+            alignItems: 'flex-end',
+            marginBottom: 6
+          }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ 
+                fontSize: '12px', 
+                color: 'white', 
+                marginBottom: 4, 
+                display: 'block',
+                opacity: 0.9
+              }}>
+                ✨ AI Task Helper (Optional)
+              </label>
+              <input
+                style={{
+                  ...inputStyle,
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'white',
+                  opacity: isAiLoading ? 0.6 : 1
+                }}
+                placeholder="Describe your task with timeline... e.g., 'Fix payment bug by Friday', 'Build user auth system (should take 2 hours)'"
+                value={aiContext}
+                onChange={e => setAiContext(e.target.value)}
+                disabled={isLoading || isAiLoading}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAISuggest}
+              disabled={isLoading || isAiLoading || !aiContext.trim()}
+              style={{
+                padding: '10px 16px',
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'rgba(255,255,255,0.2)',
+                color: 'white',
+                cursor: (isLoading || isAiLoading || !aiContext.trim()) ? 'not-allowed' : 'pointer',
+                opacity: (isLoading || isAiLoading || !aiContext.trim()) ? 0.5 : 1,
+                fontSize: '14px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {isAiLoading ? (
+                <>
+                  <span style={{ 
+                    width: 14, 
+                    height: 14, 
+                    border: '2px solid transparent',
+                    borderTop: '2px solid currentColor',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
+                  Thinking...
+                </>
+              ) : (
+                <>🚀 Suggest</>
+              )}
+            </button>
+          </div>
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.8)' }}>
+            AI will suggest title, priority, category, estimated time, due date (if mentioned), and subtasks
+          </div>
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.8)' }}>
+            Note: Unfortunately, this feature is currenlty available offline due to limited time constraint
+          </div>
+        </div>
+      )}
+      
       <input 
         style={{...inputStyle, opacity: isLoading ? 0.6 : 1}} 
         placeholder="Task title*" 
@@ -242,6 +377,65 @@ return (
           disabled={isLoading}
         />
       </div>
+
+      {/* AI Suggested Tasks */}
+      {suggestedSubtasks.length > 0 && (
+        <div style={{
+          background: 'var(--card)',
+          border: '1px solid var(--border)',
+          borderRadius: 12,
+          padding: 12
+        }}>
+          <div style={{ 
+            fontSize: '12px', 
+            color: 'var(--muted)', 
+            marginBottom: 8,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6
+          }}>
+            <span>🤖</span>
+            AI Suggested Sub-Tasks
+            <button
+              type="button"
+              onClick={() => setSuggestedSubtasks([])}
+              style={{
+                marginLeft: 'auto',
+                background: 'none',
+                border: 'none',
+                color: 'var(--muted)',
+                cursor: 'pointer',
+                fontSize: '12px'
+              }}
+            >
+              ✕ Clear
+            </button>
+          </div>
+          <div style={{ display: 'grid', gap: 6 }}>
+            {suggestedSubtasks.map((subtask, index) => (
+              <div
+                key={index}
+                style={{
+                  fontSize: '13px',
+                  padding: '8px 12px',
+                  background: 'var(--hover)',
+                  borderRadius: 8,
+                  color: 'var(--text)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8
+                }}
+              >
+                <span style={{ opacity: 0.7 }}>•</span>
+                {subtask}
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: 8 }}>
+            These are suggestions from AI. You can include them in your task description or create separate tasks for each.
+          </div>
+        </div>
+      )}
 
       <div style={{ display:'flex', gap:8 }}>
         <button 

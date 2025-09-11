@@ -9,6 +9,8 @@ const SuggestSchema = z.object({
   description: z.string().optional(),
   category: z.string().optional(), // e.g., Work, Personal, Urgent, Study
   priority: z.enum(['LOW','MEDIUM','HIGH']).optional(),
+  estimatedMinutes: z.number().int().positive().optional(), // estimated time in minutes
+  dueDate: z.string().optional(), // ISO date string if due date can be inferred
   subtasks: z.array(z.string()).optional()
 });
 
@@ -21,18 +23,34 @@ JSON shape:
   "description": string,
   "category": "Work" | "Personal" | "Urgent" | "Study" | "Misc",
   "priority": "LOW" | "MEDIUM" | "HIGH",
+  "estimatedMinutes": number, // estimated time in minutes (e.g., 30, 60, 120)
+  "dueDate": string, // ISO date string (e.g., "2024-12-31T23:59:59Z") if deadline mentioned
   "subtasks": string[]
 }
 Rules:
-- Short, actionable title
+- Short, actionable title (max 120 chars)
 - 2-5 practical subtasks max
 - If unsure about category, use "Misc"
 - Prefer MEDIUM priority unless text clearly implies HIGH or LOW
+- For estimatedMinutes: analyze task complexity and provide realistic time estimate
+  * Simple tasks (config, minor fixes): 15-30 minutes
+  * Medium tasks (feature development, testing): 60-180 minutes  
+  * Complex tasks (architecture, research): 240+ minutes
+- For dueDate: only include if context mentions specific deadline, timeline, or urgency
+  * "by Friday", "end of week", "tomorrow", "next month" etc.
+  * Calculate relative to current date when possible
+  * Use ISO format with time set to end of day (23:59:59)
+- Leave estimatedMinutes and dueDate undefined if not mentioned or unclear
 `;
 
 function buildPrompt(context) {
   const c = (context || '').slice(0, 1500);
+  const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  
   return `${SYSTEM_INSTRUCTIONS}
+
+Current Date: ${currentDate} (${currentDay})
 
 Context:
 ${c}
