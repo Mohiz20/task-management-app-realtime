@@ -19,7 +19,7 @@ A modern, full-stack task management application with real-time updates, built w
 ## 🚀 Deployment
 
 ### Backend Deployment
-- **AWS Ec2 behind cloudfront** -https://dice-reproduced-counted-replaced.trycloudflare.com/
+- **AWS EC-2 behind cloudfront** -https://dice-reproduced-counted-replaced.trycloudflare.com/
 
 ### Frontend Deployment
 - **Netlify** -https://task-omni.netlify.app/
