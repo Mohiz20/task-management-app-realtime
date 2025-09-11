@@ -4,15 +4,26 @@ A modern, full-stack task management application with real-time updates, built w
 
 ## 🔐 Authorization & Security
 
-### Task Ownership and Permissionsand real-time collaboration capabilities.
+### Task Ownership, Permissions and real-time collaboration capabilities.
 
-## 📱 Application Screenshots
+## 📱 Application Screenshots   
 
-*[Screenshots section left blank as requested - to be added when available]*
+### ![1](https://drive.google.com/file/d/15xVSJXPcJv-kQAi8baWVzr0NQ05SNOQ3/view?usp=sharing)
+### ![App Screenshot](https://drive.google.com/file/d/1xrMmFhiwdz7bnNQE7ZktjWmouPaN5PH7/view?usp=sharing)
+### ![App Screenshot](https://drive.google.com/file/d/1KP93U64YydWaS1EE8YFHIPH5lj0ySapU/view?usp=sharing)
+### ![App Screenshot](https://drive.google.com/file/d/1z-Xa1NlS1agYT3KoHcwB61XAmMQjeTeX/view?usp=sharing)
 
 ## 🌐 Live Demo
 
-*[Live demo links section left blank as requested - to be added when deployed]*
+### ![App Demo](https://drive.google.com/file/d/1niM8utoCh5b5mhEZB3w4xKUFPLKDs_uX/view?usp=sharing)
+
+## 🚀 Deployment
+
+### Backend Deployment
+- **AWS Ec2 behind cloudfront** -https://dice-reproduced-counted-replaced.trycloudflare.com/
+
+### Frontend Deployment
+- **Netlify** -https://task-omni.netlify.app/
 
 ## 🚀 Features
 
@@ -291,14 +302,6 @@ The application implements a specific authorization model for task operations:
 
 #### Potential Security Enhancements:
 - ⚠️ **Rate Limiting**: Implement rate limiting for API endpoints
-- ⚠️ **Input Validation**: Add comprehensive input sanitization
-- ⚠️ **HTTPS Enforcement**: Ensure HTTPS in production environments
-
-## 🚀 Deployment
-
-### Backend Deployment
-
-### Frontend Deployment
 
 ## 🤝 Contributing
 
